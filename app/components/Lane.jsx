@@ -81,7 +81,7 @@ class Lane extends React.Component {
     const laneId = this.props.lane.id;
     LaneActions.update({id:laneId,editing:true});
   }
-  activateNoteEdit = () => {
+  activateNoteEdit = (id) => {
     NoteActions.update({id,editing: true});
   }
 }
