@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-
+import Note from './Note'
 import Uuid from 'node-uuid'
 
 class App extends React.Component {
@@ -27,7 +27,7 @@ class App extends React.Component {
       <div>
         <button onClick={this.addNote}>+</button>
         <ul>
-          {this.state.notes.map(note => <li key={note.id}>{note.task}</li>)}
+          {this.state.notes.map(note => <Note task={note.task}/>)}
         </ul>
       </div>
     );

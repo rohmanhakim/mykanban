@@ -1,11 +1,3 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
 
-class Note extends React.Component {
-  render () {
-    return(
-      <div>In the making of Kanban App</div>
-    );
-  }
-}
-
-export default Note;
+export default ({task}) => <div>{task}</div>
