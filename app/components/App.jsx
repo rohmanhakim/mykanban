@@ -1,27 +1,25 @@
 import React, { PropTypes } from 'react'
 import Notes from './Notes'
-import Uuid from 'node-uuid'
+import NoteActions from '../actions/NoteActions'
+import NoteStore from '../stores/NoteStore'
 
 class App extends React.Component {
   constructor(props){
     super(props);
-    this.state = {
-      notes : [
-        {
-          id: Uuid.v4(),
-          task: 'Learn Webpack'
-        },
-        {
-          id: Uuid.v4(),
-          task: 'Learn React'
-        },
-        {
-          id: Uuid.v4(),
-          task: 'Do Laundry'
-        }
-      ]
-    }
+    this.state = NoteStore.getState();
   }
+  componentDidMount() {
+    NoteStore.listen(this.storeChanged);
+  }
+  componentWillUnmount() {
+    NoteStore.unlisten(this.storeChanged);
+  }
+  storeChanged = (state) => {
+    // Without a property initializer `this` wouldn't
+    // Point at the right context because it defaults to
+    // `undefined` in strict mode.
+    this.setState(state);
+  };
   render () {
     return(
       <div>
@@ -47,17 +45,7 @@ class App extends React.Component {
     // the benefits (easy to reason about, no side effects)
     // more than make up for it.
     // Libraries, such as Immutable.js, go a notch further.
-    this.setState(
-      {
-        notes: [
-          ...this.state.notes,
-          {
-            id: Uuid.v4(),
-            task: 'Wow, New Task!'
-          }
-        ]
-      }
-    );
+    NoteActions.create({task: 'New task'});
   };
   editNote = (id,task) => {
     // Don't modify if trying set an empty value
@@ -65,23 +53,13 @@ class App extends React.Component {
       return;
     }
 
-    const notes = this.state.notes.map(note => {
-      if(note.id === id && task) {
-        note.task = task;
-      }
-
-      return note;
-    });
-
-    this.setState({notes});
+    NoteActions.update({id,task});
   };
   deleteNote = (id,e) => {
     // Avoid bubbling to edit
     e.stopPropagation();
 
-    this.setState({
-      notes: this.state.notes.filter(note => note.id != id)
-    });
+    NoteActions.delete(id);
   };
 }
 

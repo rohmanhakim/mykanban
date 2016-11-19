@@ -42,6 +42,8 @@
     "webpack-merge": "^0.15.0"
   },
   "dependencies": {
+    "alt": "^0.18.6",
+    "alt-utils": "^1.0.0",
     "file-loader": "^0.9.0",
     "image-webpack-loader": "^3.0.0",
     "node-uuid": "^1.4.7",
