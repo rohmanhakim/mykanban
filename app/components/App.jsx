@@ -51,14 +51,13 @@ class App extends React.Component {
     // Libraries, such as Immutable.js, go a notch further.
     this.setState(
       {
-        notes: this.state.notes.concat(
-          [
-            {
-              id: Uuid.v4(),
-              task: 'New Task'
-            }
-          ]
-        )
+        notes: [
+          ...this.state.notes,
+          {
+            id: Uuid.v4(),
+            task: 'Wow, New Task!'
+          }
+        ]
       }
     );
   }
