@@ -25,7 +25,7 @@ class App extends React.Component {
   render () {
     return(
       <div>
-        <button onClick={this.addNote}>+</button>
+        <button className="add-note" onClick={this.addNote}>+</button>
         <Notes  notes={this.state.notes} onEdit={this.editNote} onDelete={this.deleteNote}/>
       </div>
     );
