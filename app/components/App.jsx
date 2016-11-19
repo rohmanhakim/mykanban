@@ -2,29 +2,21 @@ import React, { PropTypes } from 'react'
 import Notes from './Notes'
 import NoteActions from '../actions/NoteActions'
 import NoteStore from '../stores/NoteStore'
+import AltContainer from 'alt-container'
 
 class App extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = NoteStore.getState();
-  }
-  componentDidMount() {
-    NoteStore.listen(this.storeChanged);
-  }
-  componentWillUnmount() {
-    NoteStore.unlisten(this.storeChanged);
-  }
-  storeChanged = (state) => {
-    // Without a property initializer `this` wouldn't
-    // Point at the right context because it defaults to
-    // `undefined` in strict mode.
-    this.setState(state);
-  };
+
   render () {
     return(
       <div>
         <button className="add-note" onClick={this.addNote}>+</button>
-        <Notes  notes={this.state.notes} onEdit={this.editNote} onDelete={this.deleteNote}/>
+        <AltContainer
+          stores={[NoteStore]}
+          inject={{
+            notes: () => NoteStore.getState().notes
+          }}>
+          <Notes onEdit={this.editNote} onDelete={this.deleteNote}/>
+        </AltContainer>
       </div>
     );
   }
