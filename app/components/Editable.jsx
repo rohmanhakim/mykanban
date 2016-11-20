@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 
 class Editable extends React.Component {
   render () {
-    const {value,onEdit,OnValueClick,editing,...props} = this.props;
+    const {value,onEdit,onDelete,onValueClick,editing,...props} = this.props;
     return(
       <div {...props}>
         {editing ? this.renderEdit() : this.renderValue()}
