@@ -14,7 +14,8 @@ const TARGET = process.env.npm_lifecycle_event;
 const PATHS = {
   app:    path.join(__dirname,'app'),
   build:  path.join(__dirname,'build'),
-  style:  path.join(__dirname,'app/main.css')
+  style:  path.join(__dirname,'app/main.css'),
+  test:   path.join(__dirname, 'tests')
 };
 process.env.BABEL_ENV = TARGET;
 
@@ -60,6 +61,9 @@ const common = {
 
 if(TARGET === 'start' || !TARGET){
   module.exports = merge(common, {
+    entry: {
+      style: PATHS.style
+    },
     devtool: 'source-map',
     devServer: {
       historyApiFallback: true,
@@ -101,7 +105,8 @@ if(TARGET === 'build' || TARGET == 'stats'){
         // due to the way the package has been designed
         // (no package.json main).
         return v !== 'alt-utils';
-      })
+      }),
+      style: PATHS.style
     },
     output: {
       path: PATHS.build,
@@ -145,5 +150,37 @@ if(TARGET === 'build' || TARGET == 'stats'){
         // no matter what
       }),
     ]
+  });
+}
+
+if(TARGET === 'test' || TARGET === 'tdd') {
+  module.exports = merge(common, {
+    devtool: 'inline-source-map',
+    resolve: {
+      alias: {
+        'app': PATHS.app
+      }
+    },
+    module: {
+      preLoaders: [
+        {
+          test: /\.jsx?$/,
+          loaders: ['isparta-instrumenter'],
+          include: PATHS.app
+        }
+      ],
+      loaders: [
+        {
+          test: /\.css$/,
+          loaders: ['style','css'],
+          include: PATHS.app
+        },
+        {
+          test: /\.jsx?$/,
+          loaders: ['babel?cacheDirectory'],
+          include: PATHS.test
+        }
+      ]
+    }
   });
 }
