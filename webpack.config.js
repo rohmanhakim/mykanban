@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const NpmInstallPlugin = require('npm-install-webpack-plugin');
 const DashboardPlugin = require('webpack-dashboard/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanPlugin = require('clean-webpack-plugin');
 
 // Load *package.json* so we can use `dependencies` from there
 const pkg = require('./package.json')
@@ -98,6 +99,8 @@ if(TARGET === 'build'){
       chunkFilename: '[chunkhash].js'
     },
     plugins: [
+      // Clean the build
+      new CleanPlugin([PATHS.build]),
       // Extract vendor and manifest files
       new webpack.optimize.CommonsChunkPlugin({
         names: ['vendor','manifest']
