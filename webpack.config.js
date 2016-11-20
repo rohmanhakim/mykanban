@@ -76,7 +76,17 @@ if(TARGET === 'build'){
         compress: {
           warnings: false
         }
-      })
+      }),
+      // Setting DefinePlugin affects React library size!
+      // DefinePlugin replaces content "as is" so we need some extra quotes
+      // for the generated code to make sense
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV':'"production"'
+
+        // You can set this to JSON.stringify('development') for your
+        // development module
+        // no matter what
+      }),
     ]
   });
 }
