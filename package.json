@@ -35,6 +35,8 @@
     "babel-preset-react-hmre": "^1.1.1",
     "css-loader": "^0.25.0",
     "file-loader": "^0.9.0",
+    "html-webpack-plugin": "^2.24.1",
+    "html-webpack-template": "^5.4.1",
     "image-webpack-loader": "^3.0.0",
     "npm-install-webpack-plugin": "^4.0.4",
     "style-loader": "^0.13.1",
