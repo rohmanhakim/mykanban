@@ -93,8 +93,10 @@ if(TARGET === 'start' || !TARGET){
 if(TARGET === 'build' || TARGET == 'stats'){
   module.exports = merge(common, {
     // Define vendor entry point needed for splitting
+    // Renamed to external because github pages doesn't
+    // allow files which contains "vendor" string
     entry: {
-      vendor: Object.keys(pkg.dependencies).filter(function(v) {
+      external: Object.keys(pkg.dependencies).filter(function(v) {
         // Exclude alt-utils as it won't work with this setup
         // due to the way the package has been designed
         // (no package.json main).
@@ -125,7 +127,7 @@ if(TARGET === 'build' || TARGET == 'stats'){
       new ExtractTextPlugin('[name].[chunkhash].css'),
       // Extract vendor and manifest files
       new webpack.optimize.CommonsChunkPlugin({
-        names: ['vendor','manifest']
+        names: ['external','manifest']
       }),
       new webpack.optimize.UglifyJsPlugin({
         compress: {
