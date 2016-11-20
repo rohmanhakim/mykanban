@@ -6,7 +6,8 @@
   "scripts": {
     "build": "webpack",
     "start": "webpack-dashboard -- webpack-dev-server",
-    "dev": "webpack-dashboard -- webpack-dev-server"
+    "dev": "webpack-dashboard -- webpack-dev-server",
+    "stats": "webpack --profile --json > stats.json"
   },
   "repository": {
     "type": "git",
