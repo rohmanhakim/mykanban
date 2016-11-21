@@ -105,4 +105,18 @@ class Lane extends React.Component {
   }
 }
 
+Lane.propTypes = {
+  lane: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    editing: PropTypes.bool,
+    name: PropTypes.string,
+    notes: PropTypes.array
+  }).isRequired,
+  connectDropTarget: PropTypes.func
+};
+
+Lane.defaultProps = {
+  name: '',
+};
+
 export default Lane;
