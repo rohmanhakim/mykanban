@@ -11,7 +11,8 @@
     "deploy": "gh-pages -d build",
     "test": "karma start",
     "tdd": "karma start --auto-watch --no-single-run",
-    "flow": "flow check"
+    "flow": "flow check",
+    "report": "flow-coverage-report -i 'app/**/*.js' -i 'app/**/*.jsx' -x 'tests/**' -t html -t json -t text" 
   },
   "repository": {
     "type": "git",
@@ -42,6 +43,7 @@
     "css-loader": "^0.25.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
+    "flow-coverage-report": "^0.2.0",
     "gh-pages": "^0.12.0",
     "html-webpack-plugin": "^2.24.1",
     "html-webpack-template": "^5.4.1",
