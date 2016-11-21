@@ -24,4 +24,11 @@ describe('NoteStore', () => {
     assert.equal(state.notes.length,1);
     assert.equal(state.notes[0].task,updatedTask);
   });
+  it('deletes notes', () => {
+    NoteActions.create({task: 'test'});
+    const note = NoteStore.getState().notes[0];
+    NoteActions.delete(note.id);
+    const state = NoteStore.getState();
+    assert.equal(state.notes.length, 0);
+  });
 });
