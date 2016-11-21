@@ -1,7 +1,27 @@
 import React, { PropTypes } from 'react'
 
 class Editable extends React.Component {
-  render () {
+  props: {
+    value?: string,
+    editing?: boolean,
+    onEdit?: Function,
+    onDelete?: Function,
+    onValueClick?: Function
+  };
+  static defaultProps: {
+    value: '',
+    editing: false,
+    onEdit: () => {}
+  };
+  constructor(props:Object){
+    super(props);
+    this.renderEdit = this.renderEdit.bind(this);
+    this.renderValue = this.renderValue.bind(this);
+    this.renderDelete = this.renderDelete.bind(this);
+    this.checkEnter = this.checkEnter.bind(this);
+    this.finishEdit = this.finishEdit.bind(this);
+  }
+  render () : Object {
     const {value,onEdit,onDelete,onValueClick,editing,...props} = this.props;
     return(
       <div {...props}>
@@ -9,17 +29,17 @@ class Editable extends React.Component {
       </div>
     );
   }
-  renderEdit = () => {
+  renderEdit() : Object {
     return <input type="text" ref={
-        (e) => e ? e.selectionStart = this.props.value.length : null
+        (e: Object) => e ? e.selectionStart = this.props.value.length : null
       }
       autoFocus={true}
       defaultValue={this.props.value}
       onBlur={this.finishEdit}
       onKeyPress={this.checkEnter}/>;
   };
-  renderValue = () => {
-    const onDelete = this.props.onDelete;
+  renderValue() : Object {
+    const onDelete: Function = this.props.onDelete;
     return (
       <div onClick={this.props.onValueClick}>
         <span className="value">{this.props.value}</span>
@@ -27,38 +47,24 @@ class Editable extends React.Component {
       </div>
     );
   };
-  renderDelete = () => {
+  renderDelete() : Object {
     return <button
       className="delete"
       onClick={this.props.onDelete}>x</button>;
   };
-  checkEnter = (e) => {
+  checkEnter(e: Object) : void{
     // The user hit *enter*, let's finish up.
     if(e.key === 'Enter') {
       this.finishEdit(e);
     }
   };
-  finishEdit = (e) => {
-    const value = e.target.value;
+  finishEdit(e: Object) : void{
+    const value: String = e.target.value;
 
     if(this.props.onEdit) {
       this.props.onEdit(value);
     }
   };
 }
-
-Editable.propTypes = {
-  value: PropTypes.string,
-  editing: PropTypes.bool,
-  onEdit: PropTypes.func.isRequired,
-  onDelete: PropTypes.func,
-  onValueClick: PropTypes.func
-};
-
-Editable.defaultProps = {
-  value: '',
-  editing: false,
-  onEdit: () => {}
-};
 
 export default Editable;

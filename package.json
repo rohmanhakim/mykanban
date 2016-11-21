@@ -10,7 +10,8 @@
     "stats": "webpack --profile --json > stats.json",
     "deploy": "gh-pages -d build",
     "test": "karma start",
-    "tdd": "karma start --auto-watch --no-single-run"
+    "tdd": "karma start --auto-watch --no-single-run",
+    "flow": "flow check"
   },
   "repository": {
     "type": "git",
