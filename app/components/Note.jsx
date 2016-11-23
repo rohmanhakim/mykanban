@@ -1,23 +1,43 @@
+/* @flow */
 import React, { PropTypes } from 'react'
 import {DragSource,DropTarget} from 'react-dnd'
 import ItemTypes from '../constants/itemTypes'
 
-const noteSource = {
-  beginDrag(props) {
+type Props = {
+  id: string,
+  editing?: boolean,
+  connectDragSource: (Object) => Object,
+  connectDropTarget: (Object) => Object,
+  isDragging?: boolean,
+  onMove: (Object) => void
+};
+
+type Monitor = {
+  getItem: () => Props,
+  isDragging: () => boolean
+};
+
+type Connect = {
+  dragSource: () => void,
+  dropTarget: () => void
+}
+
+const noteSource: Object = {
+  beginDrag(props: Props) {
     return {
       id: props.id
     };
   },
-  isDragging(props,monitor) {
+  isDragging(props: Props, monitor: Monitor) {
     return props.id === monitor.getItem().id;
   }
 }
 
-const noteTarget = {
-  hover(targetProps, monitor) {
-    const targetId = targetProps.id;
-    const sourceProps = monitor.getItem();
-    const sourceId = sourceProps.id;
+const noteTarget: Object = {
+  hover(targetProps: Props, monitor: Monitor) {
+    const targetId: string = targetProps.id;
+    const sourceProps: Props = monitor.getItem();
+    const sourceId: string = sourceProps.id;
 
     if(sourceId !== targetId) {
       targetProps.onMove({sourceId, targetId});
@@ -25,39 +45,38 @@ const noteTarget = {
   }
 }
 
-@DragSource(ItemTypes.NOTE, noteSource, (connect,monitor) => ({
-  connectDragSource: connect.dragSource(),
-  isDragging: monitor.isDragging() // map isDragging() state to isDragging prop
-}))
-@DropTarget(ItemTypes.NOTE, noteTarget, (connect) => ({
-  connectDropTarget: connect.dropTarget(),
-}))
 class Note extends React.Component {
-  render () {
+  props: {
+    id: string,
+    editing?: boolean,
+    connectDragSource: (Object)=>Object,
+    connectDropTarget: (Object)=>Object,
+    isDragging?: boolean,
+    onMove?: Function,
+    children?: Object
+  };
+  opacity: number;
+  static defaultProps: {
+    onMove: () => {}
+  };
+  render () : Object {
     const {connectDragSource, connectDropTarget, isDragging, id, editing, onMove, ...props} = this.props;
 
     // Pass trough if we are editing
-    const dragSource = editing ? a => a : connectDragSource;
+    const dragSource = editing ? (a:Object) => a : connectDragSource;
 
     return dragSource(
-      connectDropTarget(
-        <li style={{opacity: isDragging ? 0 : 1}} {...props}>{props.children}</li>
-      )
+      connectDropTarget(<li style={{opacity: isDragging ? 0 : 1}} {...props}>{props.children}</li>)
     );
   }
 }
 
-Note.propTypes = {
-  id: PropTypes.string.isRequired,
-  editing: PropTypes.bool,
-  connectDragSource: PropTypes.func,
-  connectDropTarget: PropTypes.func,
-  isDragging: PropTypes.bool,
-  onMove: PropTypes.func
-};
-
-Note.defaultProps = {
-  onMove: () => {}
-};
-
-export default Note;
+export default DragSource(ItemTypes.NOTE, noteSource, (connect: Connect,monitor: Monitor) => ({
+  connectDragSource: connect.dragSource(),
+  isDragging: monitor.isDragging()
+}))(
+  DropTarget(ItemTypes.NOTE, noteTarget, (connect: Connect) => ({
+    connectDropTarget: connect.dropTarget()
+  }))
+  (Note)
+);
