@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
 
 class Editable extends React.Component {
   props: {
@@ -22,7 +22,7 @@ class Editable extends React.Component {
     this.finishEdit = this.finishEdit.bind(this);
   }
   render () : Object {
-    const {value,onEdit,onDelete,onValueClick,editing,...props} = this.props;
+    const {editing,...props} = this.props;
     return(
       <div {...props}>
         {editing ? this.renderEdit() : this.renderValue()}
@@ -37,7 +37,7 @@ class Editable extends React.Component {
       defaultValue={this.props.value}
       onBlur={this.finishEdit}
       onKeyPress={this.checkEnter}/>;
-  };
+  }
   renderValue() : Object {
     const onDelete: Function = this.props.onDelete;
     return (
@@ -46,25 +46,25 @@ class Editable extends React.Component {
         {onDelete ? this.renderDelete() : null}
       </div>
     );
-  };
+  }
   renderDelete() : Object {
     return <button
       className="delete"
       onClick={this.props.onDelete}>x</button>;
-  };
+  }
   checkEnter(e: Object) : void{
     // The user hit *enter*, let's finish up.
     if(e.key === 'Enter') {
       this.finishEdit(e);
     }
-  };
+  }
   finishEdit(e: Object) : void{
     const value: String = e.target.value;
 
     if(this.props.onEdit) {
       this.props.onEdit(value);
     }
-  };
+  }
 }
 
 export default Editable;

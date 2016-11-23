@@ -1,5 +1,5 @@
 /* @flow */
-import React, { PropTypes } from 'react'
+import React from 'react'
 import {DragSource,DropTarget} from 'react-dnd'
 import ItemTypes from '../constants/itemTypes'
 
@@ -60,7 +60,7 @@ class Note extends React.Component {
     onMove: () => {}
   };
   render () : Object {
-    const {connectDragSource, connectDropTarget, isDragging, id, editing, onMove, ...props} = this.props;
+    const {connectDragSource, connectDropTarget, isDragging, editing, ...props} = this.props;
 
     // Pass trough if we are editing
     const dragSource = editing ? (a:Object) => a : connectDragSource;
@@ -77,6 +77,5 @@ export default DragSource(ItemTypes.NOTE, noteSource, (connect: Connect,monitor:
 }))(
   DropTarget(ItemTypes.NOTE, noteTarget, (connect: Connect) => ({
     connectDropTarget: connect.dropTarget()
-  }))
-  (Note)
+  }))(Note)
 );
