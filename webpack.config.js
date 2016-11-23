@@ -6,6 +6,8 @@ const DashboardPlugin = require('webpack-dashboard/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin =  require('extract-text-webpack-plugin');
+const stylelint = require('stylelint');
+const configSuitcss = require('stylelint-config-suitcss');
 
 // Load *package.json* so we can use `dependencies` from there
 const pkg = require('./package.json')
@@ -35,6 +37,11 @@ const common = {
   module: {
     preLoaders: [
       {
+        test: /\.css$/,
+        loaders: ['postcss'],
+        include: PATHS.app
+      },
+      {
         test: /\.jsx$/,
         include: PATHS.app,
         loader: 'eslint'
@@ -55,6 +62,9 @@ const common = {
         include: PATHS.app
       }
     ]
+  },
+  postcss: function() {
+    return [stylelint(configSuitcss)];
   },
   plugins: [
     new HtmlWebpackPlugin({
